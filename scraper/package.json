@@ -1,0 +1,16 @@
+{
+  "name": "vexstreams.com-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for vexstreams.com",
+  "main": "scraper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John Holbrook",
+  "license": "MIT",
+  "dependencies": {
+    "isomorphic-fetch": "^3.0.0",
+    "jsdom": "^18.0.0",
+    "robotevents": "^2.0.0"
+  }
+}
