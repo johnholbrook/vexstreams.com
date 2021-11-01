@@ -2,6 +2,7 @@ var re = require("robotevents");
 require("isomorphic-fetch");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
+const fs = require("fs");
 
 // initialize the RobotEvents API by setting our API key
 const re_key = require("./key.js").re_key;
@@ -9,6 +10,7 @@ re.authentication.setBearer(re_key);
 
 // build a list of ISO date strings representing today and the next 7 days
 let today = new Date();
+today.setUTCHours(0,0,0,0);
 let dates = [];
 [...Array(8).keys()].forEach(i => {
     let tmp = new Date();
@@ -46,6 +48,11 @@ async function getEvents(){
             event_end.setUTCHours(0,0,0,0);
 
             if (dates.includes(event_start.toISOString()) || dates.includes(event_end.toISOString())){
+                // event starts or ends within the next 7 days
+                all_events.push(event);
+            }
+            else if (event_start < today && (event_end.toISOString == today.toISOString() || event_end > today)){
+                // event has already started, but ends today or later
                 all_events.push(event);
             }
         })
@@ -85,7 +92,7 @@ async function getWebcastInfo(event_id){
         let link = webcast_info.querySelector("a");
         
         // if the webcast info includes one of the below phrases and does not include a link, assume there is no webcast
-        const webcast_filter_phrases = ["no webcast", "not available", "not applicable", "n/a"];
+        const webcast_filter_phrases = ["no webcast", "not available", "not applicable", "n/a", "none", "we are not able"];
         let webcast_na = false;
         webcast_filter_phrases.forEach(phrase => {
             if (webcast_info_text.toLowerCase().includes(phrase) && link == null){
@@ -118,15 +125,20 @@ async function getWebcastEvents(){
         let webcast_info = await getWebcastInfo(event.sku);
         if (webcast_info){
             console.log(`${event.sku}: ${webcast_info.text} | ${webcast_info.link}`);
-            webcast_events.webcast = webcast_info;
+            event.webcast = webcast_info;
             webcast_events.push(event);
         }
     });
     return webcast_events;
 }
 
-getWebcastEvents();
+// get webcast info for upcoming events and write to a file
+async function main(){
+    let webcast_events = await getWebcastEvents();
+    let of_content = `var event_data = ${JSON.stringify(webcast_events)}`;
+    await fs.writeFile("../site/events/event_data.js", of_content, (error) => {
+        console.log(error);
+    });
+}
 
-// getWebcastEvents().then(events => {
-//     console.log(events);
-// });
+main();
