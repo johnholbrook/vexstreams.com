@@ -45,7 +45,7 @@ function generate_table_row(event, name){
             <td>${region}</td>
             <td>${level}</td>
             <td>${stream_link}</td>
-            <td><div class="btn-expand btn btn-outline-primary w-100" id="heading-${event.sku}" data-bs-toggle="collapse" data-bs-target="#collapse-${event.sku}" aria-expanded="false" aria-controls="collapse-${event.sku}"></div></td>
+            <td><div class="btn-expand btn btn-outline-primary w-100" id="heading-${event.sku}" data-bs-toggle="collapse" data-bs-target="#collapse-${event.sku}" aria-expanded="false" aria-controls="collapse-${event.sku}"><div class="collapse-arrow">∨</div></div></td>
         </tr>
         <tr>
             <td colspan="6" class="p-0 bg-secondary bg-opacity-25">

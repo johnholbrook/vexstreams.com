@@ -6,10 +6,37 @@ p{
     padding: 0 !important;
 }
 
-.btn-expand[aria-expanded="true"]::after {
+.btn-expand[aria-expanded="true"] .collapse-arrow{
+    animation: indicator-rotate-1 0.25s ease-in-out;
+    transform: rotate(180deg);
+}
+.btn-expand[aria-expanded="false"] .collapse-arrow{
+    animation: indicator-rotate-2 0.25s ease-in-out;
+    transform: rotate(0deg);
+}
+
+@keyframes indicator-rotate-1{
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes indicator-rotate-2{
+    0% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/* .btn-expand[aria-expanded="true"]::after {
     content: "∧";
 }
 
 .btn-expand[aria-expanded="false"]::after {
     content: "∨";
-}
+} */
