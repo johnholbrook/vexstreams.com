@@ -87,12 +87,17 @@ async function getWebcastInfo(event_id){
     }
     else{
         // the webcast tab exists, so get the webcast info
-        let webcast_info = webcast_tab.querySelector("p");
+        // let webcast_info = webcast_tab.querySelector("p");
+        let webcast_info = document.createElement("p");
+        webcast_tab.querySelectorAll("p").forEach(p => {
+            webcast_info.innerHTML += p.innerHTML;
+            webcast_info.innerHTML += " ";
+        });
         let webcast_info_text = webcast_info.textContent;
         let link = webcast_info.querySelector("a");
         
         // if the webcast info includes one of the below phrases and does not include a link, assume there is no webcast
-        const webcast_filter_phrases = ["no webcast", "not available", "not applicable", "n/a", "none", "we are not able"];
+        const webcast_filter_phrases = ["no webcast", "no weebcast", "not available", "not applicable", "n/a", "none", "we are not able", "there will not be a webcast"];
         let webcast_na = false;
         webcast_filter_phrases.forEach(phrase => {
             if (webcast_info_text.toLowerCase().includes(phrase) && link == null){

@@ -20,11 +20,11 @@ console.log(today_events);
 console.log(future_events);
 
 // generate a table row for a single event
-function generate_table_row(event){
+function generate_table_row(event, name){
     // spruce up the event data
     let level = event.level == "Other" ? "Local" : event.level;
     let region = event.location.region ? event.location.region : event.location.country;
-    let stream_link = event.webcast.link ? `<a href="${event.webcast.link}">Stream</a>` : ""; 
+    let stream_link = event.webcast.link ? `<a class="btn btn-success w-100" href="${event.webcast.link}">Stream</a>` : ""; 
 
     let start_date = new Date(event.start);
     start_date.setHours(0,0,0,0);
@@ -38,31 +38,53 @@ function generate_table_row(event){
         date_string = start_date.toDateString() + " - " + end_date.toDateString();
     }
 
-    let row = document.createElement("tr");
-    row.innerHTML = `<tr>
-    <td>${event.name}</td>
-    <td>${event.program.code}</td>
-    <td>${date_string}</td>
-    <td>${region}</td>
-    <td>${level}</td>
-    <td><a href="https://robotevents.com/${event.sku}.html">RobotEvents</a></td>
-    <td>${stream_link}</td>
-    </tr>
-    `
+    let row = `
+        <tr>
+            <td>${event.name}</td>
+            <td>${event.program.name}</td>
+            <td>${region}</td>
+            <td>${level}</td>
+            <td>${stream_link}</td>
+            <td><div class="btn-expand btn btn-outline-primary w-100" id="heading-${event.sku}" data-bs-toggle="collapse" data-bs-target="#collapse-${event.sku}" aria-expanded="false" aria-controls="collapse-${event.sku}"></div></td>
+        </tr>
+        <tr>
+            <td colspan="6" class="p-0 bg-secondary bg-opacity-25">
+                <div id="collapse-${event.sku}" class="accordion-collapse collapse" aria-labelledby="heading-${event.sku}" data-bs-parent="#accordion-${name}">
+                    <div class="accordion-body row">
+                        <div class="col-auto">
+                            <span class="fw-bold">Date(s):&nbsp;</span>${date_string}
+                        </div>
+                        <div class="col-auto">
+                            <span class="fw-bold">Venue:&nbsp;</span>${event.location.venue}
+                        </div>
+                        <div class="col-auto">
+                            <span class="fw-bold">Location:&nbsp;</span>${event.location.city},${event.location.region ? ` ${event.location.region},` : ""} ${event.location.country}
+                        </div>
+                        <div class="col-auto">
+                            <span class="fw-bold">RobotEvents:&nbsp;</span><a href="https://robotevents.com/${event.sku}.html" target="_blank">${event.sku}</a>
+                        </div>
+                        <div class="col-auto">
+                            <span class="fw-bold">Stream Description:&nbsp;</span>${event.webcast.html}
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    `;
 
     return row;
 }
 
-function generate_table(events_list){
-    let table = document.createElement("table");
-    table.classList.add("table", "table-striped");
-    table.innerHTML = "<thead><tr><th>Event Name</th><th>Competition</th><th>Date(s)</th><th>Region</th><th>Type</th><th>Event Link</th><th>Stream</th></tr></thead><tbody>";
+function generate_table(events_list, name){
+
+    let table = `<table class="table table-hover table-borderless"><thead><tr><th>Event Name</th><th>Program</th><th>Region</th><th>Type</th><th>Stream</th><th>Details</th></tr></thead><tbody class="accordion" id="accordion-${name}">`;
     events_list.forEach(event => {
-        table.appendChild(generate_table_row(event));
+        table += generate_table_row(event, name);
     });
-    table.innerHTML += "</tbody>";
+    table += "</tbody></table>";
+    console.log(table);
     return table;
 }
 
-document.querySelector("#events_today_area").innerHTML = generate_table(today_events).outerHTML;
-document.querySelector("#future_events_area").innerHTML = generate_table(future_events).outerHTML;
+document.querySelector("#events_today_area").innerHTML = generate_table(today_events, "today");
+document.querySelector("#future_events_area").innerHTML = generate_table(future_events, "upcoming");
