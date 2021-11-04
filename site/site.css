@@ -32,11 +32,3 @@ p{
         transform: rotate(0deg);
     }
 }
-
-/* .btn-expand[aria-expanded="true"]::after {
-    content: "∧";
-}
-
-.btn-expand[aria-expanded="false"]::after {
-    content: "∨";
-} */

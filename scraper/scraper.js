@@ -97,7 +97,7 @@ async function getWebcastInfo(event_id){
         let link = webcast_info.querySelector("a");
         
         // if the webcast info includes one of the below phrases and does not include a link, assume there is no webcast
-        const webcast_filter_phrases = ["no webcast", "no weebcast", "not available", "not applicable", "n/a", "none", "we are not able", "there will not be a webcast"];
+        const webcast_filter_phrases = ["no webcast", "no weebcast", "not available", "not applicable", "n/a", "none", "we are not able", "there will not be a webcast", "we will not cast"];
         let webcast_na = false;
         webcast_filter_phrases.forEach(phrase => {
             if (webcast_info_text.toLowerCase().includes(phrase) && link == null){

@@ -9,12 +9,53 @@ title: Stream List
     page for more info.
 </p>
 
+<div class="accordion px-2" id="filtersAccordion">
+    <div class="accordion-item m-4 col-xxl-10 mx-auto">
+        <h2 class="accordion-header" id="filtersHeading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#filtersArea"
+                aria-expanded="true" aria-controls="filtersArea">
+                Filters
+            </button>
+        </h2>
+        <div id="filtersArea" class="accordion-collapse collapse show" aria-labelledby="filtersHeading"
+            data-bs-parent="#filtersAccordion">
+            <div class="accordion-body">
+
+                <div class="row">
+                    <div class="form-check col-auto mb-3">
+                        <input type="checkbox" class="form-check-input" id="include-leagues" checked>
+                        <label for="include-leagues" class="form-check-label">Include Leagues</label>
+                    </div>
+    
+                    <div class="col-auto">
+                        <select class="form-select col-auto mb-3" id="select-program">
+                            <option value="all" selected>Program...</option>
+                        </select>
+                    </div>
+
+                    <div class="col-auto">
+                        <select class="form-select col-auto mb-3" id="select-region">
+                            <option value="all" selected>Region...</option>
+                        </select>
+                    </div>
+
+                    <div class="col-auto">
+                        <select class="form-select col-auto mb-3" id="select-type">
+                            <option value="all" selected>Event type...</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <h2 class="m-3 text-center">Current Events</h2>
-<div id="events_today_area" class="m-4"></div>
+<div id="events_today_area" class="m-4 p-2 col-xxl-10 mx-auto"></div>
 
 <h2 class="m-3 text-center">Upcoming Events</h2>
-<div id="future_events_area" class="m-4"></div>
+<div id="future_events_area" class="m-4 p-2 col-xxl-10 mx-auto"></div>
 
 <script src="events/event_data.js"></script>
 <script src="index.js"></script>

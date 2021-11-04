@@ -18,6 +18,8 @@
 
     {{ content }}
 
-    {% include footer.html %}
+    {% if page.hide-footer != true %}
+      {% include footer.html %}
+    {% endif %}
   </body>
 </html>
