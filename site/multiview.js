@@ -12,8 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <option value="4">4</option>
                 <option value="1+3">1+3</option>
                 <option value="1+4">1+4</option>
-                <option value="6">6</option>
-                <option value="9">9</option>
             </select>
             <button class="btn btn-danger" id="reset-mv">Reset</button>
         </span>
@@ -102,14 +100,24 @@ function add_mv_item(width, height, id, streams){
     tmp.classList.add("multiview-item");
     tmp.style.width = width + "%";
     tmp.style.height = height + "%";
-    tmp.innerHTML = generate_select_html(id);
     document.querySelector("#multiview-parent").appendChild(tmp);
+    populate_stream_select(id);
+}
+
+function populate_stream_select(id){
+    document.querySelector(`#multiview-item-${id}`).innerHTML = generate_select_html(id);
     document.querySelector("#stream-select-" + id).onchange = function(){
         load_stream(id);
+        document.querySelector(`#close-${id}`).onclick = function(){
+            populate_stream_select(id);
+        }
     }
     document.querySelector(`#load-custom-embed-${id}`).onclick = function(){
         let embed_url = document.querySelector(`#custom-embed-${id}`).value;
         load_custom_embed(id, embed_url);
+        document.querySelector(`#close-${id}`).onclick = function(){
+            populate_stream_select(id);
+        }
     }
 }
 
@@ -207,9 +215,13 @@ function get_event_embed(event){
 function load_stream(id){
     let embed_url = document.querySelector("#stream-select-" + id).value;
     console.log(embed_url);
-    document.querySelector("#multiview-item-" + id).innerHTML = `<iframe src="${embed_url}" frameborder="0" allowfullscreen="true" scrolling="no" height="100%" width="100%"></iframe>`;
+    let tmp = `<button id="close-${id}" class="btn btn-danger btn-sm close-btn">&times;</button>`;
+    tmp += `<iframe src="${embed_url}" class="stream-frame" frameborder="0" allowfullscreen="true" scrolling="no" height="100%" width="100%"></iframe>`
+    document.querySelector("#multiview-item-" + id).innerHTML = tmp;
 }
 
 function load_custom_embed(id, embed_url){
-    document.querySelector("#multiview-item-" + id).innerHTML = `<iframe src="${embed_url}" frameborder="0" allowfullscreen="true" scrolling="no" height="100%" width="100%"></iframe>`;
+    let tmp = `<button id="close-${id}" class="btn btn-danger btn-sm close-btn">&times;</button>`;
+    tmp += `<iframe src="${embed_url}" class="stream-frame" frameborder="0" allowfullscreen="true" scrolling="no" height="100%" width="100%"></iframe>`
+    document.querySelector("#multiview-item-" + id).innerHTML = tmp;
 }

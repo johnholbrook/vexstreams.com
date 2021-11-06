@@ -63,3 +63,23 @@ body {
     border: 1px solid black;
     margin: 0;
 }
+
+.close-btn{
+    background-color: red;
+    border-radius: 5px;
+    padding: 0 .5em;
+    position: relative;
+    float: right;
+    margin: 0;
+    /* display: inline-block; */
+    top: 1em;
+    right: 1em;
+    z-index: 1;
+}
+/* .close-btn::after{
+    content: "&times;";
+} */
+.stream-frame{
+    position:relative;
+    top: -1.5em;
+}
