@@ -141,7 +141,7 @@ async function getWebcastEvents(){
 async function main(){
     let webcast_events = await getWebcastEvents();
     let of_content = `var event_data = ${JSON.stringify(webcast_events)}`;
-    await fs.writeFile("../site/events/event_data.js", of_content, (error) => {
+    await fs.writeFile("../docsx/events/event_data.js", of_content, (error) => {
         console.log(error);
     });
 }
