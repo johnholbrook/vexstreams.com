@@ -8,11 +8,11 @@ const fs = require("fs");
 const re_key = require("./key.js").re_key;
 re.authentication.setBearer(re_key);
 
-// build a list of ISO date strings representing today and the next 7 days
+// build a list of ISO date strings representing today and the next 14 days
 let today = new Date();
 today.setUTCHours(0,0,0,0);
 let dates = [];
-[...Array(8).keys()].forEach(i => {
+[...Array(15).keys()].forEach(i => {
     let tmp = new Date();
     tmp.setDate(today.getDate() + i);
     tmp.setUTCHours(0,0,0,0);

@@ -32,3 +32,34 @@ p{
         transform: rotate(0deg);
     }
 }
+
+.stream-embed{
+    border: 1px solid red;
+    width: 50%;
+    height: 50%;
+    /* padding-top: 56.25%; */
+}
+
+html, body{
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#multiview-parent{
+    flex-grow: 1;
+    margin-top: 0;
+    padding-top: 0;
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.multiview-item{
+    /* border: 1px solid red; */
+    background-color: silver;
+    border: 1px solid black;
+    margin: 0;
+}
