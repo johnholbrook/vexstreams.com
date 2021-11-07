@@ -1,5 +1,5 @@
 .DS_Store
 key.js
 node_modules/
-site/_site
-site/.jekyll-cache
+docs/_site/
+docs/.jekyll-cache/
