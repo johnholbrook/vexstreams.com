@@ -97,7 +97,7 @@ async function getWebcastInfo(event_id){
         let link = webcast_info.querySelector("a");
         
         // if the webcast info includes one of the below phrases and does not include a link, assume there is no webcast
-        const webcast_filter_phrases = ["no webcast", "no weebcast", "not available", "not applicable", "n/a", "none", "we are not able", "there will not be a webcast", "we will not cast"];
+        const webcast_filter_phrases = ["no webcast", "no weebcast", "no web cast", "not available", "not applicable", "n/a", "none", "we are not able", "there will not be a webcast", "we will not cast", "will not be webcast"];
         let webcast_na = false;
         webcast_filter_phrases.forEach(phrase => {
             if (webcast_info_text.toLowerCase().includes(phrase) && link == null){
@@ -109,14 +109,60 @@ async function getWebcastInfo(event_id){
             return null;
         }
         else {
-            // at this point we're pretty sure there is actually a webcast
-            let link_href = link ? link.href : "";
+            // at this point we're pretty sure will actually be a webcast
+            if (link){
+                // webcast tab includes a link
+                return {
+                    html: webcast_info.innerHTML,
+                    text: webcast_info.textContent,
+                    link: link.href
+                };
+            }
+            else {
+                // webcast tab does not include a link
+                // check to see if there is a URL anywhere in the webcast info
+                let link_found = false;
+                let link_url = "";
+                // let desc_split = webcast_info_text.split(" ");
+                let desc_split = webcast_info_text.split(/\s+/);
+                desc_split.forEach(word => {
+                    if (!link_found){
+                        try{
+                            let url_obj = new URL(word);
+                            if (["http:", "https:"].includes(url_obj.protocol)){
+                                link_found = true;
+                                link_url = url_obj.href;
+                            }
+                        }
+                        catch(e){}
+                    }
+                });
+                if (link_found){
+                    // there was a URL in the webcast info
+                    return {
+                        html: webcast_info.innerHTML,
+                        text: webcast_info.textContent,
+                        link: link_url
+                    };
+                }
+                else {
+                    // there was no URL in the webcast info
+                    return {
+                        html: webcast_info.innerHTML,
+                        text: webcast_info.textContent,
+                        link: ""
+                    };
+                }
+            }
+
+
+            // let link_href = link ? link.href : "";
             // console.log(`${event_id}: ${webcast_info.textContent} | ${link_href}`);
-            return {
-                html: webcast_info.innerHTML,
-                text: webcast_info.textContent,
-                link: link_href
-            };
+            // return {
+            //     html: webcast_info.innerHTML,
+            //     text: webcast_info.textContent,
+            //     link: link_href
+            // };
         }
     }
 };
@@ -141,7 +187,7 @@ async function getWebcastEvents(){
 async function main(){
     let webcast_events = await getWebcastEvents();
     let of_content = `var event_data = ${JSON.stringify(webcast_events)}`;
-    await fs.writeFile("../docsx/events/event_data.js", of_content, (error) => {
+    await fs.writeFile("../docs/events/event_data.js", of_content, (error) => {
         console.log(error);
     });
 }
