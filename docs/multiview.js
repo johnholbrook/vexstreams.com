@@ -1,6 +1,19 @@
+var event_data = null;
 var active_streams = [];
 
 document.addEventListener('DOMContentLoaded', function() {
+    // load event data
+    var request = new XMLHttpRequest();
+    request.open('GET', '/events/event_data.json', false);  // `false` makes the request synchronous
+    request.send(null);
+    if (request.status === 200) {
+        // console.log(JSON.parse(request.responseText));
+        event_data = JSON.parse(request.responseText).data;
+    }
+    else {
+        alert("ERROR: Couldn't lead event data.")
+    }
+    
     document.querySelector("header").innerHTML += `<div class="col-auto ms-2 me-4">
         <span class="input-group">
             <span class="input-group-text">Layout:&nbsp;</span>

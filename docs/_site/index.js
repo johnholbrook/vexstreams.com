@@ -1,3 +1,5 @@
+var event_data = null;
+
 var today_events = [];
 var future_events = [];
 
@@ -5,6 +7,18 @@ var today = new Date();
 today.setHours(0,0,0,0);
 
 document.addEventListener('DOMContentLoaded', function() {
+    // load event data
+    var request = new XMLHttpRequest();
+    request.open('GET', '/events/event_data.json', false);  // `false` makes the request synchronous
+    request.send(null);
+    if (request.status === 200) {
+        // console.log(JSON.parse(request.responseText));
+        event_data = JSON.parse(request.responseText).data;
+    }
+    else {
+        alert("ERROR: Couldn't lead event data.")
+    }
+
     // split the events into today and future events
     event_data.forEach(event => {
         let event_date = new Date(event.start);

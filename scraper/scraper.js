@@ -186,8 +186,14 @@ async function getWebcastEvents(){
 // get webcast info for upcoming events and write to a file
 async function main(){
     let webcast_events = await getWebcastEvents();
-    let of_content = `var event_data = ${JSON.stringify(webcast_events)}`;
-    await fs.writeFile("../docs/events/event_data.js", of_content, (error) => {
+    let now = new Date();
+    let of_content = {
+        "last_updated": now.toISOString(),
+        "data": webcast_events
+    }
+    let of_text = JSON.stringify(of_content);
+    // let of_content = `var event_data = ${JSON.stringify(webcast_events)}`;
+    await fs.writeFile("../docs/events/event_data.json", of_text, (error) => {
         console.log(error);
     });
 }
