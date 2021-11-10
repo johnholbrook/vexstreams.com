@@ -3,6 +3,7 @@ require("isomorphic-fetch");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const fs = require("fs");
+const {execSync} = require('child_process'); 
 
 // initialize the RobotEvents API by setting our API key
 const re_key = require("./key.js").re_key;
@@ -183,19 +184,44 @@ async function getWebcastEvents(){
     return webcast_events;
 }
 
+// return true if two arrays are identical
+function same_array(a, b){
+    return JSON.stringify(a) == JSON.stringify(b);
+}
+
 // get webcast info for upcoming events and write to a file
 async function main(){
+    // get event data
     let webcast_events = await getWebcastEvents();
-    let now = new Date();
-    let of_content = {
-        "last_updated": now.toISOString(),
-        "data": webcast_events
+
+    // check to see if the data we just got is different from the data we already have
+    let existing_data = require("../docs/events/event_data.json").data;
+    if (!same_array(webcast_events, existing_data)){
+        console.log("Data has changed since last scan, writing to file and pushing to GitHub...")
+
+        // write data to json file
+        let now = new Date();
+        let of_content = {
+            "last_updated": now.toISOString(),
+            "data": webcast_events
+        }
+        let of_text = JSON.stringify(of_content);
+        await fs.writeFile("../docs/events/event_data.json", of_text, (error) => {
+            console.log(error);
+
+            // commit updated data and push to github
+            let tmp = execSync("git add ../docs/events/event_data.json");
+            console.log(tmp.toString());
+            tmp = execSync(`git commit -m "Event data update: ${now.toISOString()}"`);
+            console.log(tmp.toString());
+            tmp = execSync("git push origin main");
+            console.log(tmp.toString());
+        });
     }
-    let of_text = JSON.stringify(of_content);
-    // let of_content = `var event_data = ${JSON.stringify(webcast_events)}`;
-    await fs.writeFile("../docs/events/event_data.json", of_text, (error) => {
-        console.log(error);
-    });
+    else {
+        // no change in the data, so no need to update
+        console.log("No changes since last scan.")
+    }
 }
 
 main();
