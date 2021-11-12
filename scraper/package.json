@@ -6,11 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": "https://github.com/johnholbrook/vexstreams.com",
   "author": "John Holbrook",
   "license": "MIT",
   "dependencies": {
     "isomorphic-fetch": "^3.0.0",
-    "jsdom": "^18.0.0",
+    "jsdom": "^18.0.1",
     "robotevents": "^2.0.0"
   }
 }

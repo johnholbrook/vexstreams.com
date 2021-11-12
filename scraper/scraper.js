@@ -191,6 +191,9 @@ function same_array(a, b){
 
 // get webcast info for upcoming events and write to a file
 async function main(){
+    let now = new Date();
+    console.log(`---------- BEGIN SCAN AT ${now.toISOString()} ----------`);
+
     // get event data
     let webcast_events = await getWebcastEvents();
 
@@ -200,7 +203,7 @@ async function main(){
         console.log("Data has changed since last scan, writing to file and pushing to GitHub...")
 
         // write data to json file
-        let now = new Date();
+        //let now = new Date();
         let of_content = {
             "last_updated": now.toISOString(),
             "data": webcast_events
@@ -222,6 +225,7 @@ async function main(){
         // no change in the data, so no need to update
         console.log("No changes since last scan.")
     }
+    console.log(`---------- END SCAN AT ${now.toISOString()} ----------`);
 }
 
 main();
