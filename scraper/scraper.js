@@ -205,7 +205,7 @@ async function main(){
     let webcast_events = await getWebcastEvents();
 
     // check to see if the data we just got is different from the data we already have
-    let existing_data = await get_json("http://vexstreams.com/events/event_data.json");
+    let existing_data = (await get_json("http://vexstreams.com/events/event_data.json")).data;
     // let existing_data = require("../docs/events/event_data.json").data;
     if (!same_array(webcast_events, existing_data)){
         console.log("Data has changed since last scan, writing to file and pushing to GitHub...")
