@@ -1,4 +1,5 @@
 var event_data = null;
+var last_updated = null;
 
 var today_events = [];
 var future_events = [];
@@ -13,11 +14,17 @@ document.addEventListener('DOMContentLoaded', function() {
     request.send(null);
     if (request.status === 200) {
         // console.log(JSON.parse(request.responseText));
-        event_data = JSON.parse(request.responseText).data;
+        let response = JSON.parse(request.responseText);
+        // event_data = JSON.parse(request.responseText).data;
+        event_data = response.data;
+        last_updated = response.last_updated;
     }
     else {
         alert("ERROR: Couldn't lead event data.")
     }
+
+    // show the time the data was updated
+    document.querySelector("#last-updated").innerHTML = last_updated;
 
     // split the events into today and future events
     event_data.forEach(event => {
