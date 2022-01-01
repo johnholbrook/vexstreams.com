@@ -11,11 +11,12 @@ re.authentication.setBearer(re_key);
 
 // build a list of ISO date strings representing today and the next 14 days
 let today = new Date();
+let todayDate = today.getDate();
 today.setUTCHours(0,0,0,0);
 let dates = [];
 [...Array(15).keys()].forEach(i => {
     let tmp = new Date();
-    tmp.setDate(today.getDate() + i);
+    tmp.setDate(todayDate + i);
     tmp.setUTCHours(0,0,0,0);
     dates.push(tmp.toISOString());
 });
